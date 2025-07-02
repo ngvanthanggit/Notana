@@ -1,0 +1,7 @@
+/* Hide scrollbar globally for scroll containers */
+::-webkit-scrollbar {
+  display: none;
+}
+html {
+  scrollbar-width: none; /* Firefox */
+}

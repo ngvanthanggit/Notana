@@ -1,103 +1,161 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import { useInView } from "react-intersection-observer";
+import { motion } from "framer-motion";
+
+export default function LandingPage() {
+  const { ref: heroRef, inView: heroInView } = useInView({ threshold: 0.6 });
+  const { ref: featuresRef, inView: featuresInView } = useInView({
+    threshold: 0.5,
+  });
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
+    <>
+      {/* Fixed Navbar */}
+      <nav className="fixed top-0 left-0 w-full z-50 bg-white border-b border-gray-200 shadow-sm px-6 py-4 flex justify-between items-center">
+        <div className="text-2xl font-bold text-violet-600">Nortana</div>
+        <div className="flex items-center gap-4">
+          <button className="text-sm text-gray-600 hover:text-violet-500 transition">
+            Light/Dark
+          </button>
           <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/signin"
+            className="text-sm text-gray-700 hover:text-violet-600 transition"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
+            Sign In
           </a>
           <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/signup"
+            className="bg-violet-500 text-white text-sm px-4 py-2 rounded-lg hover:bg-violet-600 active:scale-95 transition-transform shadow"
           >
-            Read our docs
+            Sign Up
           </a>
         </div>
+      </nav>
+
+      {/* Scroll container for sections */}
+      <main className="pt-20 pb-12 h-screen overflow-y-scroll snap-y snap-mandatory scroll-smooth">
+        {/* Hero Section */}
+        <section
+          ref={heroRef}
+          className="relative snap-start h-screen flex flex-col items-center justify-center px-6 text-center overflow-hidden"
+        >
+          {/* Background image */}
+          <div
+            className="absolute inset-0 bg-[url('/background.png')] bg-cover bg-center opacity-25 "
+            aria-hidden="true"
+          />
+
+          {/* Foreground content */}
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={heroInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+            transition={{ duration: 1.0 }}
+            className="text-5xl font-extrabold mb-6 z-10"
+          >
+            Task Management <span className="text-violet-600">Made Simple</span>
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 30 }}
+            animate={heroInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+            transition={{ delay: 0.5, duration: 0.8 }}
+            className="max-w-2xl text-gray-600 text-lg mb-10 z-10"
+          >
+            Built for university students and startup teams. Collaborate in
+            real-time, organize tasks with smart Kanban boards, and boost your
+            team’s productivity.
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={heroInView ? { opacity: 1 } : { opacity: 0 }}
+            transition={{ delay: 1.0 }}
+            className="flex gap-4 z-10"
+          >
+            <a
+              href="/signup"
+              className="bg-violet-500 text-white px-6 py-3 rounded-xl font-medium hover:bg-violet-600 active:scale-95 transition shadow"
+            >
+              Get Started Free
+            </a>
+            <button className="border border-gray-300 px-6 py-3 rounded-xl font-medium hover:bg-gray-100 active:scale-95 transition">
+              Watch Demo
+            </button>
+          </motion.div>
+        </section>
+
+        {/* Features Section */}
+        <section
+          ref={featuresRef}
+          className="relative snap-start h-screen bg-gray-50 flex flex-col items-center justify-center px-6 text-center overflow-hidden"
+        >
+          {/* Background image */}
+          <div
+            className="absolute inset-0 bg-[url('/background2.png')] bg-cover bg-center opacity-20"
+            aria-hidden="true"
+          />
+
+          {/* Foreground content */}
+          <div className="z-10 w-full">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={
+                featuresInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }
+              }
+              transition={{ delay: 0.8, duration: 0.6 }}
+            >
+              <h2 className="text-3xl font-bold mb-4">
+                Everything you need to stay organized
+              </h2>
+              <p className="max-w-xl mx-auto text-gray-600 mb-12 text-base">
+                From simple task tracking to complex project management, Nortana
+                adapts to your team’s workflow.
+              </p>
+            </motion.div>
+
+            <motion.div
+              className="grid sm:grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto"
+              initial={{ opacity: 0 }}
+              animate={featuresInView ? { opacity: 1 } : { opacity: 0 }}
+              transition={{ delay: 1.3 }}
+            >
+              {[
+                {
+                  icon: "📋",
+                  title: "Kanban Boards",
+                  desc: "Visualize your workflow with drag-and-drop Kanban boards.",
+                },
+                {
+                  icon: "👥",
+                  title: "Team Collaboration",
+                  desc: "Real-time collaboration with role-based permissions.",
+                },
+                {
+                  icon: "🤖",
+                  title: "AI-Powered Insights",
+                  desc: "Smart prioritization and deadline prediction (coming soon).",
+                },
+              ].map((f, i) => (
+                <div
+                  key={i}
+                  className="bg-white p-8 rounded-2xl shadow-md hover:shadow-xl transition"
+                >
+                  <div className="text-3xl mb-4">{f.icon}</div>
+                  <h3 className="text-lg font-semibold mb-2">{f.title}</h3>
+                  <p className="text-gray-600 text-sm">{f.desc}</p>
+                </div>
+              ))}
+            </motion.div>
+          </div>
+        </section>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+
+      {/* Footer - outside scroll container */}
+
+      <footer className="fixed bottom-0 left-0 w-full h-12 bg-white border-t border-gray-200 text-center text-sm text-gray-500 flex items-center justify-center z-40">
+        <p>© {new Date().getFullYear()} Nortana. All rights reserved.</p>
       </footer>
-    </div>
+    </>
   );
 }
