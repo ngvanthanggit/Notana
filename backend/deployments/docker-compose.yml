@@ -1,0 +1,39 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: notana_postgres
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+  
+  auth:
+    build:
+      context: ../
+      dockerfile: docker/auth.Dockerfile
+    container_name: notana_auth
+    depends_on:
+      - postgres
+    env_file:
+      - ../.env.auth
+    ports:
+      - "4000:4000"
+
+  task:
+    build:
+      context: ../
+      dockerfile: docker/task.Dockerfile
+    container_name: notana_task
+    depends_on:
+      - postgres
+    env_file:
+      - ../.env.task
+    ports:
+      - "4001:4001"
+
+volumes:
+  pgdata:
