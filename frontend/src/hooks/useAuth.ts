@@ -2,22 +2,22 @@
 import { useEffect, useState } from "react";
 
 export function useAuth() {
-  const [user, setUser] = useState<{ name: string } | null>(null);
+  const [user, setUser] = useState<{ email: string; password: string; name: string } | null>(null);
 
   useEffect(() => {
     // Simulate fetching user from localStorage
-    const storedUser = localStorage.getItem("nortana-user");
+    const storedUser = localStorage.getItem("mock-user");
     if (storedUser) setUser(JSON.parse(storedUser));
   }, []);
 
-  const login = (name: string) => {
-    const newUser = { name };
-    localStorage.setItem("nortana-user", JSON.stringify(newUser));
+  const login = (email: string, password: string, name: string) => {
+    const newUser = { email, password, name };
+    localStorage.setItem("mock-user", JSON.stringify(newUser));
     setUser(newUser);
   };
 
   const logout = () => {
-    localStorage.removeItem("nortana-user");
+    localStorage.removeItem("mock-user");
     setUser(null);
   };
 
